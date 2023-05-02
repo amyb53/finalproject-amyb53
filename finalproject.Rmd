@@ -1,0 +1,87 @@
+---
+title: "Final Project: t-tests in R"
+name: "Amy Becker"
+affiliation: School of Information, University of Arizona, Tucson, AZ
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+I will be using the built-in dataset, iris, for my following examples. This data set contains sepal length, sepal width, petal length, and petal width measurements for 3 different species of iris (50 each) for a total of 150 observations.
+
+```{r iris}
+head(iris)
+```
+
+## Two-sample *t*-tests
+
+### Example 1: Setosa vs Versicolor
+
+For my examples, I am going to assume the 3 assumptions for a t-test. Just to double check that Sepal Width data looks approximately normal, I plotted a histogram. It looks normal so I will continue on with the t-tests.
+
+```{r, echo=FALSE}
+hist(iris$Sepal.Width, breaks=10, prob=TRUE)
+
+```
+
+Create a new data frame with the first 100 rows of "iris". This way, only the first two species, Setosa and Versicolor, are included.
+
+```{r}
+setosa.versicolor <- data.frame(iris[1:100,])
+```
+
+Use R's built-in t-test function to test Sepal.Width between Species.
+
+```{r}
+t.test(Sepal.Width ~ Species, data = setosa.versicolor)
+
+```
+
+Look at the p-value to determine whether to reject or fail to reject the null hypothesis. Since the p-value here is smaller than .05, I will reject the null and conclude with a high degree of confidence that the true difference in mean sepal width between Setosa and Versicolor is not 0.
+
+### Example 2: Versicolor vs Virginica
+
+Create a new data frame with the last 100 rows of "iris". This way, only the last two species, Versicolor and Virginica, are included.
+
+```{r}
+versicolor.virginica <- data.frame(iris[51:150,])
+
+```
+
+Use R's built-in t-test function to test Sepal.Width between Species.
+
+```{r}
+t.test(Sepal.Width ~ Species, data = versicolor.virginica)
+
+```
+
+Look at the p-value to determine whether to reject or fail to reject the null hypothesis. Since the p-value here is smaller than .05, I will reject the null and conclude with a high degree of confidence that the true difference in mean sepal width between Versicolor and Virginica is not 0.
+
+## One-sample *t*-test
+
+### Example 3: Setosa vs iris population
+
+View the summary of the "iris" dataset to determine the mean sepal width for the iris population. It is 3.057.
+
+```{r}
+summary(iris)
+
+```
+
+Create a new data frame with only the first 50 rows of "iris". This way, only Setosa is included.
+
+```{r}
+setosa <- data.frame(iris[1:50,])
+
+```
+
+Use R's built-in t-test function to test Sepal.Width vs the iris population mean of 3.057.
+
+```{r}
+t.test(setosa$Sepal.Width, mu=3.057)
+
+```
+
+Look at the p-value to determine whether to reject or fail to reject the null hypothesis. Since the p-value here is smaller than .05, I will reject the null and conclude with a high degree of confidence that the Setosa mean sepal width is not equal to the iris population mean sepal width.
